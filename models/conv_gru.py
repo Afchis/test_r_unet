@@ -44,8 +44,8 @@ class GruCell(nn.Module):
 
 class Gru(nn.Module):
 
-    def __init__(self, channels_size, gru_input_size, batch_size=BATCH_SIZE,
-    			 timesteps=TIMESTEPS, gru_nan=GRU_NAN): # arg for gru layer
+    def __init__(self, channels_size, gru_input_size, batch_size,
+    			 timesteps, gru_nan): # arg for gru layer
         super(Gru, self).__init__()
         self.batch_size = batch_size
         self.timesteps = timesteps

@@ -101,24 +101,30 @@ class UpSample(nn.Module):
 
 
 class UNetSmall(nn.Module):
-    def __init__(self, num_channels=1, num_classes=2):
+    def __init__(self, num_channels=1, num_classes=2, batch_size, timesteps, gru_nan):
         # TODO: add argument NUM_CHENNEL!!!!!!!
         super(UNetSmall, self).__init__()
         num_feat = [32, 64, 128, 256]
+        self.batch_size = batch_size
+        self.timesteps = timesteps
+        self.gru_nan = gru_nan
         self.input_size = input_size
 
         self.down1 = nn.Sequential(DoubleConv(num_channels, num_feat[0]))
 
         self.down2 = nn.Sequential(nn.MaxPool2d(kernel_size=2),
-                                   Gru(num_feat[0], gru_input_size=64),
+                                   Gru(channels_size=num_feat[0], gru_input_size=64,
+                                       batch_size=self.batch_size, timesteps=self.timesteps, gru_nan=self.gru_nan),
                                    Conv(num_feat[0], num_feat[1]))
 
         self.down3 = nn.Sequential(nn.MaxPool2d(kernel_size=2),
-                                   Gru(num_feat[1], gru_input_size=32),
+                                   Gru(channels_size=num_feat[1], gru_input_size=32,
+                                       batch_size=self.batch_size, timesteps=self.timesteps, gru_nan=self.gru_nan),
                                    Conv(num_feat[1], num_feat[2]))
 
         self.bottom = nn.Sequential(nn.MaxPool2d(kernel_size=2),
-                                   Gru(num_feat[2], gru_input_size=16),
+                                   Gru(channels_size=num_feat[2], gru_input_size=16,
+                                       batch_size=self.batch_size, timesteps=self.timesteps, gru_nan=self.gru_nan),
                                    Conv(num_feat[2], num_feat[3]))
 
         self.up1 = UpSample(num_feat[3], num_feat[2])

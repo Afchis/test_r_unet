@@ -2,17 +2,16 @@ import os
 import numpy as np
 
 import torch
-from torch.utils.data import Dataset, Dataloader
+from torch.utils.data import Dataset
 import torchvision
 import torchvision.transforms as transforms
 
 from PIL import Image
 
 
-
 class MedData(Dataset):
-    def __init__(self, timesteps=TIMESTEPS, folder_data=FOLDER_DATA, folder_mask=FOLDER_MASK, 
-    			 file_names = FILE_NAMES):
+    def __init__(self, timesteps, folder_data, folder_mask, 
+    			 file_names):
         super().__init__()
         self.time = timesteps
         self.folder_data = folder_data
